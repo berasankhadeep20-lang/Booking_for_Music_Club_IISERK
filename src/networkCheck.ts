@@ -1,8 +1,6 @@
-// IISERK is on NKN (National Knowledge Network) — 14.139.x.x block
-// 🔧 Update IISERK_IP_PREFIX below after checking your campus public IP at https://api.ipify.org
+// IISERK campus public IP prefix (verified via api.ipify.org on IISERK WiFi)
 const IISERK_IP_PREFIXES = [
-  '14.139.',   // NKN block (common to IITs/IISERs/IISc)
-  '203.129.',  // alternate NKN allocation seen at some campuses
+  '45.64.227.', // IISERK Kolkata campus WiFi
 ]
 
 export async function getPublicIP(): Promise<string> {
