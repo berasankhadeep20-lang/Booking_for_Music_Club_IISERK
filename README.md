@@ -1,7 +1,5 @@
 # 🎸 IISER Kolkata Music Club — Slot Booking System
 
-
-
 A fair, automatic, real-time slot booking web app replacing the WhatsApp chaos.
 
 **Live:** https://berasankhadeep20-lang.github.io/Booking_for_Music_Club_IISERK/

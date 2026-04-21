@@ -1,4 +1,4 @@
-import { type Slot, type SlotStatus, type Booking } from './types'
+import { type Slot, type SlotStatus, type Booking, type QueueEntry } from './types'
 
 export const SLOTS: Slot[] = [
   { id: 's1', label: '8:00 AM – 9:00 AM',   startH: 8,  endH: 9  },
@@ -25,17 +25,25 @@ export function getSlotTimes(slot: Slot): { open: Date; start: Date; end: Date }
 export function getSlotStatus(
   slot: Slot,
   bookings: Record<string, Booking>,
+  queues: Record<string, Record<string, QueueEntry>>,
   currentUid?: string
-): { status: SlotStatus; booking?: Booking; opensIn?: number } {
+): { status: SlotStatus; booking?: Booking; opensIn?: number; queuePosition?: number; queueLength?: number } {
   const now = new Date()
   const { open, end } = getSlotTimes(slot)
   const booking = bookings[slot.id]
+  const slotQueue = queues[slot.id] ?? {}
+  const queueEntries = Object.values(slotQueue).sort((a, b) => a.timestamp - b.timestamp)
+  const queueLength = queueEntries.length
 
   if (now >= end)   return { status: 'past', booking }
   if (now < open)   return { status: 'upcoming', booking, opensIn: open.getTime() - now.getTime() }
+
   if (booking) {
-    if (booking.uid === currentUid) return { status: 'mine', booking }
-    return { status: 'full', booking }
+    if (booking.uid === currentUid) return { status: 'mine', booking, queueLength }
+    // check if current user is in queue
+    const myQueuePos = queueEntries.findIndex(e => e.uid === currentUid)
+    if (myQueuePos !== -1) return { status: 'queued', booking, queuePosition: myQueuePos + 1, queueLength }
+    return { status: 'full', booking, queueLength }
   }
   return { status: 'open' }
 }
@@ -44,6 +52,14 @@ export function getUserBookingToday(bookings: Record<string, Booking>, uid: stri
   const day = todayKey()
   for (const sid in bookings) {
     if (bookings[sid].uid === uid && bookings[sid].day === day) return sid
+  }
+  return null
+}
+
+export function getUserQueuedToday(queues: Record<string, Record<string, QueueEntry>>, uid: string): string | null {
+  for (const slotId in queues) {
+    const slotQueue = queues[slotId] ?? {}
+    if (Object.values(slotQueue).some(e => e.uid === uid)) return slotId
   }
   return null
 }

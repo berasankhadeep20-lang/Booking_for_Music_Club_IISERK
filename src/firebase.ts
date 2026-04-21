@@ -2,15 +2,14 @@ import { initializeApp } from 'firebase/app'
 import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { getDatabase } from 'firebase/database'
 
-// These are injected as environment variables at build time via GitHub Actions secrets
 const firebaseConfig = {
-  apiKey:            import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain:        import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  databaseURL:       import.meta.env.VITE_FIREBASE_DATABASE_URL,
-  projectId:         import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket:     import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId:             import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: "AIzaSyAlonKAsSo5ccwBYALXIsJPjhG5RN3kbSk",
+  authDomain: "music-club-booking.firebaseapp.com",
+  databaseURL: "https://music-club-booking-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "music-club-booking",
+  storageBucket: "music-club-booking.firebasestorage.app",
+  messagingSenderId: "83157387295",
+  appId: "1:83157387295:web:31a932099560215cdf6d2a"
 }
 
 const app = initializeApp(firebaseConfig)
@@ -19,5 +18,4 @@ export const auth = getAuth(app)
 export const db = getDatabase(app)
 export const googleProvider = new GoogleAuthProvider()
 
-// Force account picker every time
 googleProvider.setCustomParameters({ prompt: 'select_account' })

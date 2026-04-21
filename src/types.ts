@@ -8,6 +8,16 @@ export interface Booking {
   slotId: string
 }
 
+export interface QueueEntry {
+  uid: string
+  name: string
+  email: string
+  instruments: string[]
+  timestamp: number
+  day: string
+  slotId: string
+}
+
 export interface Slot {
   id: string
   label: string
@@ -15,4 +25,4 @@ export interface Slot {
   endH: number
 }
 
-export type SlotStatus = 'past' | 'upcoming' | 'open' | 'full' | 'mine'
+export type SlotStatus = 'past' | 'upcoming' | 'open' | 'full' | 'mine' | 'queued'
